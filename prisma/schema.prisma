@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+model Inventory {
+  id Int @default(autoincrement()) @id
+  barrcode String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  cost Decimal @db.Decimal(13,2)
+  price Decimal @db.Decimal(13,2)
+  quantity Decimal @db.Decimal(13,2)
+  type TypesProduct @default(FULL_UNIT)
+}
+
+enum TypesProduct {
+  FULL_UNIT
+  PARTIAL_UNIT
+  PACKS
+  CONSUMABLE
+}
