@@ -1,6 +1,6 @@
 import React from 'react';
 import type { NextPage } from 'next';
-import { Button, Form, Input, Space } from "antd";
+import { Button, Form, Input, InputNumber, Space } from "antd";
 
 const Stocks: NextPage = () => {
   const [form] = Form.useForm();
@@ -21,6 +21,9 @@ const Stocks: NextPage = () => {
         </Form.Item>
         <Form.Item name="name" label="Name" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+        <Form.Item name="cost" label="Cost" rules={[{ required: true, min: 0 }]}>
+          <InputNumber className="w-full" />
         </Form.Item>
         <Form.Item>
           <Space>
