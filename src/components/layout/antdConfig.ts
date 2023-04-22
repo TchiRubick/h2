@@ -6,7 +6,7 @@ export const antdConfig = {
     colorBorder: "#3C549366",
     colorBorderSecondary: "#16255666",
     colorBgContainer: "#3C549366",
-    colorBgElevated: "#3C549399",
+    colorBgElevated: "#3C5493",
     colorBgLayout: "#162556",
     colorBgSpotlight: "#FDB485",
     colorBgMask: "#000",
@@ -38,6 +38,8 @@ export const antdConfig = {
       controlOutlineWidth: 1,
     },
     Select: {
+      controlOutlineWidth: 1,
+      controlOutline: "#ffffff66",
       colorWarningOutline: "#ffffff66",
       controlItemBgActive: "#FD795B",
     },

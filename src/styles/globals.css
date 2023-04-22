@@ -5,3 +5,8 @@
 body {
   background-color: #162556;
 }
+
+/* OVERRIDE ANTD */
+.ant-btn-primary {
+  box-shadow: 0 2px 0 rgb(157 157 157 / 26%);
+}
