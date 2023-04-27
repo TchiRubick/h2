@@ -1,12 +1,10 @@
 import React from "react";
 
 import { Card } from "antd";
-import type { tFakeDataStocks } from "../../types/stock";
-type tProps = {
-  data: tFakeDataStocks[];
-};
-const StockList = (props: tProps) => {
-  const { data } = props;
+import { type tFakeDataStocks , mappingStockType} from "../../types/stock";
+
+const StockList: React.FC<{ data: tFakeDataStocks[]}> = ({ data }) => {
+ 
   return (
     <Card>
       <div className="w-full">
@@ -32,7 +30,7 @@ const StockList = (props: tProps) => {
                 <td>{stock.cost}</td>
                 <td>{stock.price}</td>
                 <td>{stock.quantity}</td>
-                <td className={`border bg-cyan-50 bg-opacity-5 text-xs rounded py-1 px-1 ${stock.type === "FULL_UNIT"? "text-green-700" :stock.type === "CONSUMABLE"? "text-blue-400": stock.type === "PACKS"? "text-red-500" : "text-white"} `}>{stock.type}</td>
+                <td className={`border bg-cyan-50 bg-opacity-5 text-xs rounded py-1 px-1 ${mappingStockType[stock.type].color } `}>{mappingStockType[stock.type].text}</td>
               </tr>
             ))}
           </tbody>
