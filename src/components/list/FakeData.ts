@@ -5,7 +5,7 @@ export const fakeDataStocks = [
         name: 'riz',
         cost: 10,
         price: 450,
-        quantity: '12',
+        quantity: 12,
         type: "CONSUMABLE",
     },
     {
@@ -14,7 +14,7 @@ export const fakeDataStocks = [
         name: 'Bonbon',
         cost: 10,
         price: 450,
-        quantity: '12',
+        quantity: 12,
         type: "FULL_UNIT",
     },
     {
@@ -23,7 +23,7 @@ export const fakeDataStocks = [
         name: 'savon de toilette',
         cost: 10,
         price: 450,
-        quantity: '12',
+        quantity: 12,
         type: "PACKS",
     }
     ,
@@ -33,7 +33,7 @@ export const fakeDataStocks = [
         name: 'savon de toilette',
         cost: 10,
         price: 450,
-        quantity: '12',
+        quantity: 12,
         type: "PARTIAL_UNIT",
     }
 ]

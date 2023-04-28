@@ -1,9 +1,9 @@
 import React from "react";
 
 import { Card } from "antd";
-import { type tFakeDataStocks , mappingStockType} from "../../types/stock";
+import { type tDataStocks , mappingStockType} from "~/types/stock";
 
-const StockList: React.FC<{ data: tFakeDataStocks[]}> = ({ data }) => {
+const StockList: React.FC<{ data: tDataStocks[]}> = ({ data }) => {
  
   return (
     <Card>

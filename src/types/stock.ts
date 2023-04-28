@@ -1,4 +1,4 @@
-export type tFakeDataStocks = {
+export type tDataStocks = {
     id: number;
     barrcode: string;
     name: string;
