@@ -1,7 +1,9 @@
-export const fakeDataStocks = [
+import type { tDataStocks } from "~/types/stock"
+
+export const fixturesStocks: tDataStocks[] = [
     {
         id: 1,
-        barrcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYG',
         name: 'riz',
         cost: 10,
         price: 450,
@@ -10,7 +12,7 @@ export const fakeDataStocks = [
     },
     {
         id: 2,
-        barrcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYG',
         name: 'Bonbon',
         cost: 10,
         price: 450,
@@ -19,7 +21,7 @@ export const fakeDataStocks = [
     },
     {
         id: 3,
-        barrcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYG',
         name: 'savon de toilette',
         cost: 10,
         price: 450,
@@ -29,7 +31,7 @@ export const fakeDataStocks = [
     ,
     {
         id: 4,
-        barrcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYG',
         name: 'savon de toilette',
         cost: 10,
         price: 450,

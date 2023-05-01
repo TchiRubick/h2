@@ -12,7 +12,7 @@ datasource db {
 
 model Inventory {
   id Int @default(autoincrement()) @id
-  barrcode String @unique
+  barcode String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   name String

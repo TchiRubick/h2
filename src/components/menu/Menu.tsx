@@ -8,10 +8,12 @@ import {
   PercentageOutlined,
   BankOutlined,
   AppstoreOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import { Menu as MenuAntd, type MenuProps } from "antd";
 import { useRouter } from "next/router";
 import type { FC } from "react";
+import { useLogoutFunction } from "@propelauth/react";
 
 const items: MenuProps["items"] = [
   {
@@ -59,12 +61,27 @@ const items: MenuProps["items"] = [
     key: "/performance",
     icon: <FundProjectionScreenOutlined />,
   },
+  {
+    label: "Logout",
+    key: "/logout",
+    icon: <LogoutOutlined />,
+  },
 ];
 
 const Menu: FC = () => {
   const router = useRouter();
 
+  const logoutFn: (redirectOnLogout: boolean) => Promise<void> =
+    useLogoutFunction();
+
   const onClick: MenuProps["onClick"] = async (e) => {
+    if (e.key === "/logout") {
+      logoutFn(true)
+        .then((value: void) => value)
+        .catch((err) => console.error(err));
+      return;
+    }
+
     await router.push(e.key);
   };
 
@@ -72,9 +89,12 @@ const Menu: FC = () => {
     <MenuAntd
       onClick={onClick}
       selectedKeys={[router.pathname]}
-      mode="horizontal"
       items={items}
-    />
+      className="rounded-lg"
+    >
+      <MenuAntd.Item key='test'>Test</MenuAntd.Item>
+      <MenuAntd.Item key='testw'>Testw</MenuAntd.Item>
+    </MenuAntd>
   );
 };
 

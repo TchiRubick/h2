@@ -11,7 +11,7 @@ const StockList: React.FC<{ data: tDataStocks[]}> = ({ data }) => {
         <table className="w-full ">
           <thead className="mb-4 w-full text-sm text-white">
             <tr className=" grid w-full grid-cols-6 gap-3 text-center">
-              <td>Barrcode</td>
+              <td>barcode</td>
               <td>Name</td>
               <td>Cost</td>
               <td>Price</td>
@@ -25,7 +25,7 @@ const StockList: React.FC<{ data: tDataStocks[]}> = ({ data }) => {
                 key={stock.id}
                 className="grid w-full grid-cols-6 gap-3 text-center"
               >
-                <td>{stock.barrcode}</td>
+                <td>{stock.barcode}</td>
                 <td>{stock.name}</td>
                 <td>{stock.cost}</td>
                 <td>{stock.price}</td>

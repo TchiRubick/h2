@@ -1,6 +1,6 @@
 export type tDataStocks = {
   id: number;
-  barrcode: string;
+  barcode: string;
   name: string;
   cost: number;
   price: number;
