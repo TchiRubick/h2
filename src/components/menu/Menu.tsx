@@ -23,8 +23,56 @@ const items: MenuProps["items"] = [
   },
   {
     label: "Stocks",
-    key: "/stocks",
+    key: "stocks",
     icon: <InboxOutlined />,
+    children: [
+      {
+        type: 'group',
+        label: 'Stock 1',
+        children: [
+          {
+            label: 'List 1',
+            key: 'setting:1',
+            children: [
+              {
+                label: 'Stocks',
+                key: "/stocks",
+              },
+            ],
+          },
+          {
+            label: 'List 2',
+            key: 'setting:2',
+            children: [
+              {
+                label: 'Stocks',
+                key: "/stocks",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'group',
+        label: 'Stock 2',
+        children: [
+          {
+            label: 'List 3',
+            key: 'setting:3',
+            children: [
+              {
+                label: 'Stocks',
+                key: "/stocks",
+              },
+            ],
+          },
+          {
+            label: 'List 4',
+            key: "/stocks",
+          },
+        ],
+      },
+    ],
   },
   {
     label: "Sales",
