@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
-import { StockList } from "~/components";
-import { fixturesStocks } from "~/fixtures/fixturesStocks";
+import { StockForm } from "~/components";
+
 
 const Stocks: NextPage = () => {
   const onSubmit = (values: { [key: string]: unknown }) => {
@@ -10,10 +10,11 @@ const Stocks: NextPage = () => {
 
   return (
     
-      <div className="sm:w-3/4 w-full m-auto mt-10">
-        <StockList data={fixturesStocks}/>
+      <div className="sm:w-3/4 w-full m-auto">
+        <StockForm title="Create a stock" onSubmit={onSubmit} />
       </div>
-
+      
+    
   );
 };
 
