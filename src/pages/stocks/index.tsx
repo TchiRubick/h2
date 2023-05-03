@@ -4,9 +4,7 @@ import { StockList } from "~/components";
 import { fixturesStocks } from "~/fixtures/fixturesStocks";
 
 const Stocks: NextPage = () => {
-  const onSubmit = (values: { [key: string]: unknown }) => {
-    console.log(values);
-  };
+ 
 
   return (
     

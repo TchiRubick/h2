@@ -1,5 +1,16 @@
 import React, { type FC } from "react";
-import { Button, Form, Input, Space, InputNumber, Select, Card } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Space,
+  InputNumber,
+  Select,
+  Card,
+  Divider,
+} from "antd";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 type Props = {
   title: string;
@@ -13,7 +24,14 @@ const StockForm: FC<Props> = ({ title, onSubmit }) => {
   };
 
   return (
-    <Card className="w-full" title={title}>
+    <Card className="w-full">
+      <div className=" flex h-auto w-full flex-row items-center pb-2 text-xl">
+        <Link href="/stocks">
+          <ArrowLeftOutlined className="mr-4 w-4 text-xl text-white" />
+        </Link>
+        <span>{title}</span>
+      </div>
+      <hr className="opacity-5" />
       <Form
         form={form}
         layout="vertical"
