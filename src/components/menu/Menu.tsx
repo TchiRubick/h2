@@ -32,7 +32,7 @@ const items: MenuProps["items"] = [
       },
       {
         label: 'Create',
-        key: '/stocks',
+        key: '/stocks/create',
       },
     ],
   },
