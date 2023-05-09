@@ -101,10 +101,7 @@ const Menu: FC = () => {
       selectedKeys={[router.pathname]}
       items={items}
       className="rounded-lg"
-    >
-      <MenuAntd.Item key='test'>Test</MenuAntd.Item>
-      <MenuAntd.Item key='testw'>Testw</MenuAntd.Item>
-    </MenuAntd>
+    />
   );
 };
 
