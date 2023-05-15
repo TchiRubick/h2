@@ -1,11 +1,11 @@
 import React from "react";
-
-
+import { api } from "~/utils/api";
+import { type NextPage } from "next";
 import { Card, Space, Button } from "antd";
-import { type tDataStocks, mappingStockType } from "~/types/stock";
 import Link from "next/link";
 
-const StockList: React.FC<{ data: tDataStocks[] }> = ({ data }) => {
+const StockList: NextPage = () => {
+  const {data} = api.inventory.getList.useQuery();
   return (
     <Card>
       <div className="flex justify-end pb-3"> 
@@ -30,23 +30,17 @@ const StockList: React.FC<{ data: tDataStocks[] }> = ({ data }) => {
             </tr>
           </thead>
           <tbody className="mb-auto mt-4 grid w-full gap-y-4 text-white">
-            {data.map((stock) => (
+            {data?.map((stock) => (
               <tr
                 key={stock.id}
                 className="grid w-full grid-cols-6 gap-3 text-center"
               >
                 <td>{stock.barcode}</td>
                 <td>{stock.name}</td>
-                <td>{stock.cost}</td>
-                <td>{stock.price}</td>
-                <td>{stock.quantity}</td>
-                <td
-                  className={`rounded border bg-cyan-50 bg-opacity-5 py-1 px-1 text-xs ${
-                    mappingStockType[stock.type].color
-                  } `}
-                >
-                  {mappingStockType[stock.type].text}
-                </td>
+                <td><>{stock.cost}</></td>
+                <td><>{stock.price}</></td>
+                <td><>{stock.quantity}</></td>
+                <td>{stock.type}</td>
               </tr>
             ))}
           </tbody>
