@@ -12,7 +12,7 @@ export const fixturesStocks: tDataStocks[] = [
     },
     {
         id: 2,
-        barcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHIOG',
         name: 'Bonbon',
         cost: 10,
         price: 450,
@@ -21,7 +21,7 @@ export const fixturesStocks: tDataStocks[] = [
     },
     {
         id: 3,
-        barcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYGHY',
         name: 'savon de toilette',
         cost: 10,
         price: 450,
@@ -31,7 +31,7 @@ export const fixturesStocks: tDataStocks[] = [
     ,
     {
         id: 4,
-        barcode: 'V5T-7UIHYG',
+        barcode: 'V5T-7UIHYGY',
         name: 'savon de toilette',
         cost: 10,
         price: 450,

@@ -11,12 +11,14 @@ import {
 } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { tDataStocks } from "~/types/stock";
 
 type Props = {
   title: string;
+  data?: tDataStocks;
   onSubmit: (values: { [key: string]: unknown }) => void;
 };
-const StockForm: FC<Props> = ({ title, onSubmit }) => {
+const StockForm: FC<Props> = ({ title, data, onSubmit }) => {
   const [form] = Form.useForm();
 
   const onReset = () => {
@@ -41,19 +43,20 @@ const StockForm: FC<Props> = ({ title, onSubmit }) => {
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2">
           <Form.Item
             name="barcode"
+            initialValue={data?.barcode}
             label="Barcode"
             rules={[{ required: true }]}
           >
             <Input className="w-full" />
           </Form.Item>
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Form.Item name="name" label="Name"  initialValue={data?.name} rules={[{ required: true }]}>
             <Input className="w-full" />
           </Form.Item>
           <Form.Item
             name="cost"
             label="Cost"
             rules={[{ required: true }]}
-            initialValue={0}
+            initialValue={data?.cost ?? 0}
           >
             <InputNumber size="middle" min={0} className="w-full" />
           </Form.Item>
@@ -61,7 +64,7 @@ const StockForm: FC<Props> = ({ title, onSubmit }) => {
             name="price"
             label="Price"
             rules={[{ required: true }]}
-            initialValue={0}
+            initialValue={data?.price ?? 0}
           >
             <InputNumber size="middle" min={0} className="w-full" />
           </Form.Item>
@@ -69,7 +72,7 @@ const StockForm: FC<Props> = ({ title, onSubmit }) => {
             name="quantity"
             label="Quantity"
             rules={[{ required: true }]}
-            initialValue={0}
+            initialValue={data?.quantity ?? 0}
           >
             <InputNumber size="middle" min={0} className="w-full" />
           </Form.Item>
@@ -77,7 +80,7 @@ const StockForm: FC<Props> = ({ title, onSubmit }) => {
             name="type"
             label="Type"
             rules={[{ required: true }]}
-            initialValue="FULL_UNIT"
+            initialValue={data?.type ?? "FULL_UNIT"}
           >
             <Select
               className="w-full"
