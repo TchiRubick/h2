@@ -1,10 +1,12 @@
 import React from "react";
-
+import { type NextPage } from "next";
 import { Card, Space, Button } from "antd";
-import { type tDataStocks, mappingStockType } from "~/types/stock";
 import Link from "next/link";
+import { api } from "~/utils/api";
 
-const StockList: React.FC<{ data: tDataStocks[] }> = ({ data }) => {
+const StockList: NextPage = () => {
+  const { data } = api.inventory.getList.useQuery();
+
   return (
     <Card>
       <div className="flex justify-end pb-3">
