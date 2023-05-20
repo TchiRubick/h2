@@ -1,8 +1,8 @@
-import { type AppType } from "next/app";
-import { Layout, GuardAuth } from "~/components";
-import { api } from "~/utils/api";
+import { type AppType } from 'next/app';
+import { Layout, GuardAuth } from '~/components';
+import { api } from '~/utils/api';
 
-import "~/styles/globals.css";
+import '~/styles/globals.css';
 
 const MyApp: AppType = ({ Component, pageProps }) => (
   <GuardAuth>

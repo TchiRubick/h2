@@ -1,5 +1,5 @@
-export { default as GuardAuth } from '~/components/guard/GuardAuth';
-export { default as Layout } from '~/components/layout/Layout';
-export { default as Menu } from '~/components/menu/Menu';
-export { default as StockForm } from '~/components/form/stockForm/StockForm';
-export { default as StockList } from '~/components/list/stockList/StockList';
+export * from '~/components/guard/GuardAuth';
+export * from '~/components/layout/Layout';
+export * from '~/components/menu/Menu';
+export * from '~/components/form/stockForm/StockForm';
+export * from '~/components/list/stockList/StockList';

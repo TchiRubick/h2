@@ -1,17 +1,14 @@
-import React from "react";
-import type { NextPage } from "next";
-import { StockList } from "~/components";
-import { fixturesStocks } from "~/fixtures/fixturesStocks";
-
+import React from 'react';
+import type { NextPage } from 'next';
+import { StockList } from '~/components';
+import { api } from '~/utils/api';
 const Stocks: NextPage = () => {
- 
+  const { data } = api.inventory.get.useQuery();
 
   return (
-    
-      <div className="sm:w-3/4 w-full m-auto mt-10">
-        <StockList data={fixturesStocks}/>
-      </div>
-
+    <div className='m-auto mt-10 w-full sm:w-3/4'>
+      <StockList data={data || []} />
+    </div>
   );
 };
 

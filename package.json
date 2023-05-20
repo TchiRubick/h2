@@ -6,6 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "db-push": "prisma db push",
+    "prettify": "prettier . --write",
     "lint": "next lint",
     "start": "next start"
   },

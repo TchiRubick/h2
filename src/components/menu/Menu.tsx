@@ -9,21 +9,21 @@ import {
   BankOutlined,
   AppstoreOutlined,
   LogoutOutlined,
-} from "@ant-design/icons";
-import { Menu as MenuAntd, type MenuProps } from "antd";
-import { useRouter } from "next/router";
-import type { FC } from "react";
-import { useLogoutFunction } from "@propelauth/react";
+} from '@ant-design/icons';
+import { Menu as MenuAntd, type MenuProps } from 'antd';
+import { useRouter } from 'next/router';
+import type { FC } from 'react';
+import { useLogoutFunction } from '@propelauth/react';
 
-const items: MenuProps["items"] = [
+const items: MenuProps['items'] = [
   {
-    label: "Dashboard",
-    key: "/dashboard",
+    label: 'Dashboard',
+    key: '/dashboard',
     icon: <AppstoreOutlined />,
   },
   {
-    label: "Stocks",
-    key: "stocks",
+    label: 'Stocks',
+    key: 'stocks',
     icon: <InboxOutlined />,
     children: [
       {
@@ -37,55 +37,54 @@ const items: MenuProps["items"] = [
     ],
   },
   {
-    label: "Sales",
-    key: "/sales",
+    label: 'Sales',
+    key: '/sales',
     icon: <CreditCardOutlined />,
   },
   {
-    label: "Employee",
-    key: "/employee",
+    label: 'Employee',
+    key: '/employee',
     icon: <UsergroupDeleteOutlined />,
   },
   {
-    label: "History",
-    key: "/history",
+    label: 'History',
+    key: '/history',
     icon: <HistoryOutlined />,
   },
   {
-    label: "Client",
-    key: "/client",
+    label: 'Client',
+    key: '/client',
     icon: <UserOutlined />,
   },
   {
-    label: "Discount",
-    key: "/discount",
+    label: 'Discount',
+    key: '/discount',
     icon: <PercentageOutlined />,
   },
   {
-    label: "Finance",
-    key: "/finance",
+    label: 'Finance',
+    key: '/finance',
     icon: <BankOutlined />,
   },
   {
-    label: "Performance",
-    key: "/performance",
+    label: 'Performance',
+    key: '/performance',
     icon: <FundProjectionScreenOutlined />,
   },
   {
-    label: "Logout",
-    key: "/logout",
+    label: 'Logout',
+    key: '/logout',
     icon: <LogoutOutlined />,
   },
 ];
 
-const Menu: FC = () => {
+export const Menu: FC = () => {
   const router = useRouter();
 
-  const logoutFn: (redirectOnLogout: boolean) => Promise<void> =
-    useLogoutFunction();
+  const logoutFn: (redirectOnLogout: boolean) => Promise<void> = useLogoutFunction();
 
-  const onClick: MenuProps["onClick"] = async (e) => {
-    if (e.key === "/logout") {
+  const onClick: MenuProps['onClick'] = async (e) => {
+    if (e.key === '/logout') {
       logoutFn(true)
         .then((value: void) => value)
         .catch((err) => console.error(err));
@@ -100,9 +99,7 @@ const Menu: FC = () => {
       onClick={onClick}
       selectedKeys={[router.pathname]}
       items={items}
-      className="rounded-lg"
+      className='rounded-lg'
     />
   );
 };
-
-export default Menu;
