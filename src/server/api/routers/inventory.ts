@@ -21,5 +21,5 @@ export const inventoryRouter = createTRPCRouter({
   get: publicProcedure.query(() => getInventories()),
   set: publicProcedure
     .input(z.object(setValidatorSchemas))
-    .query(({ input }) => setInventories(input)),
+    .mutation(({ input }) => setInventories(input)),
 });
