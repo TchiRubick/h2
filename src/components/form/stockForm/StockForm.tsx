@@ -1,38 +1,58 @@
 import React, { type FC, useState } from 'react';
+import type { FormInstance } from 'antd';
 import { Button, Form, Input, Space, InputNumber, Select, Card } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import { api } from '~/utils/api';
+import { Inventory } from '@prisma/client';
 
 type Props = {
   title: string;
-};
-export const StockForm: FC<Props> = ({ title }) => {
-  const [form] = Form.useForm();
-
-  const onReset = () => {
-    form.resetFields();
-  };
-  const [errorMessage, setErrorMessage] = useState('');
-  const [succesMessage, setsuccesMessage] = useState('');
-
-  const { mutateAsync } = api.inventory.set.useMutation();
-
-  const onSubmit = (values: {
+  data?: Inventory | null;
+  onSubmit: (values: {
     barcode: string;
     name: string;
     cost: number;
     price: number;
     quantity: number;
     type: 'FULL_UNIT' | 'PARTIAL_UNIT' | 'PACKS' | 'CONSUMABLE';
-  }) => {
-    try {
-      mutateAsync(values);
-      setsuccesMessage('Succes');
-      setErrorMessage('');
-    } catch (error) {
-      setErrorMessage('Error, barcode is unique');
-      setsuccesMessage('');
+  }) => Promise<void>;
+  isEditing: boolean;
+};
+
+const SubmitButton = ({ form }: { form: FormInstance }) => {
+  const [submittable, setSubmittable] = React.useState(false);
+
+  // Watch all values
+  const values = Form.useWatch([], form);
+
+  React.useEffect(() => {
+    form.validateFields().then(
+      () => {
+        setSubmittable(true);
+      },
+      () => {
+        setSubmittable(false);
+      }
+    );
+  }, [values]);
+
+  return (
+    <Button type='primary' htmlType='submit' disabled={!submittable}>
+      Submit
+    </Button>
+  );
+};
+export const StockForm: FC<Props> = ({ title, data, onSubmit, isEditing }) => {
+  const [form] = Form.useForm();
+
+  const onReset = () => {
+    form.resetFields();
+  };
+  const stock = () => {
+    if (Number(data?.quantity) > 0) {
+      return <div> The number of stocks is {Number(data?.quantity)}</div>;
+    } else {
+      return <div> </div>;
     }
   };
 
@@ -44,31 +64,54 @@ export const StockForm: FC<Props> = ({ title }) => {
         </Link>
         <span>{title}</span>
       </div>
-      <h1 className='text-red-500'>{errorMessage}</h1>
-      <h1 className='text-blue-800'>{succesMessage}</h1>
       <hr className='opacity-5' />
-      <Form form={form} layout='vertical' name='control-hooks' onFinish={onSubmit}>
+      <Form form={form} layout='vertical' name='validateOnly' onFinish={onSubmit}>
         <div className='grid w-full grid-cols-1 gap-5 sm:grid-cols-2'>
-          <Form.Item name='barcode' label='Barcode' rules={[{ required: true }]}>
+          <Form.Item
+            name='barcode'
+            label='Barcode'
+            rules={[{ required: true }, { min: 9 }]}
+            initialValue={data?.barcode}
+          >
+            <Input className='w-full' disabled={isEditing} max={10} />
+          </Form.Item>
+          <Form.Item
+            name='name'
+            label='Name'
+            rules={[{ required: true }]}
+            initialValue={data?.name}
+          >
             <Input className='w-full' />
           </Form.Item>
-          <Form.Item name='name' label='Name' rules={[{ required: true }]}>
-            <Input className='w-full' />
-          </Form.Item>
-          <Form.Item name='cost' label='Cost' rules={[{ required: true }]} initialValue={0}>
+          <Form.Item
+            name='cost'
+            label='Cost'
+            rules={[{ type: 'number', required: true }]}
+            initialValue={Number(data?.cost ?? 0)}
+          >
             <InputNumber size='middle' min={0} className='w-full' />
           </Form.Item>
-          <Form.Item name='price' label='Price' rules={[{ required: true }]} initialValue={0}>
+          <Form.Item
+            name='price'
+            label='Price'
+            rules={[{ type: 'number', required: true }]}
+            initialValue={Number(data?.price ?? 0)}
+          >
             <InputNumber size='middle' min={0} className='w-full' />
           </Form.Item>
-          <Form.Item name='quantity' label='Quantity' rules={[{ required: true }]} initialValue={0}>
+          <Form.Item
+            name='quantity'
+            label='Quantity'
+            rules={[{ type: 'number', required: true }]}
+            initialValue={0}
+          >
             <InputNumber size='middle' min={0} className='w-full' />
           </Form.Item>
           <Form.Item
             name='type'
             label='Type'
             rules={[{ required: true }]}
-            initialValue={'FULL_UNIT'}
+            initialValue={data?.type ?? 'FULL_UNIT'}
           >
             <Select
               className='w-full'
@@ -80,11 +123,10 @@ export const StockForm: FC<Props> = ({ title }) => {
               ]}
             />
           </Form.Item>
+          <Form.Item initialValue={Number(data?.quantity ?? 0)}>{stock()}</Form.Item>
           <Form.Item>
             <Space>
-              <Button type='primary' htmlType='submit'>
-                Submit
-              </Button>
+              <SubmitButton form={form} />
               <Button htmlType='button' onClick={onReset}>
                 Reset
               </Button>
