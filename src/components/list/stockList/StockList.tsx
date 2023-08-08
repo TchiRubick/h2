@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import type { Inventory } from '@prisma/client';
 import { Card, Space, Button } from 'antd';
+import { Load } from '~/components';
 import Link from 'next/link';
 import { mappingStockType } from '~/types/stock';
 
@@ -28,28 +29,34 @@ export const StockList: FC<{ data: Inventory[] }> = ({ data }) => (
           </tr>
         </thead>
         <tbody className='mb-auto mt-4 grid w-full gap-y-4'>
-          {data?.map((stock) => (
-            <Link
-              key={stock.id}
-              href={`/stocks/${stock.barcode as string}`}
-              className=' text-white'
-            >
-              <tr className='grid w-full grid-cols-6 gap-3 text-center'>
-                <td>{stock.barcode}</td>
-                <td>{stock.name}</td>
-                <td>{String(stock.cost)}</td>
-                <td>{String(stock.price)}</td>
-                <td>{String(stock.quantity)}</td>
-                <td
-                  className={`rounded border bg-cyan-50 bg-opacity-5 py-1 px-1 text-xs ${
-                    mappingStockType[stock.type].color
-                  } `}
-                >
-                  {mappingStockType[stock.type].text}
-                </td>
-              </tr>
-            </Link>
-          ))}
+          {data?.length === 0 ? (
+            <div className='m-auto p-28'>
+              <Load />
+            </div>
+          ) : (
+            data?.map((stock) => (
+              <Link
+                key={stock.id}
+                href={`/stocks/${stock.barcode as string}`}
+                className=' text-white'
+              >
+                <tr className='grid w-full grid-cols-6 gap-3 text-center'>
+                  <td>{stock.barcode}</td>
+                  <td>{stock.name}</td>
+                  <td>{String(stock.cost)}</td>
+                  <td>{String(stock.price)}</td>
+                  <td>{String(stock.quantity)}</td>
+                  <td
+                    className={`rounded border bg-cyan-50 bg-opacity-5 py-1 px-1 text-xs ${
+                      mappingStockType[stock.type].color
+                    } `}
+                  >
+                    {mappingStockType[stock.type].text}
+                  </td>
+                </tr>
+              </Link>
+            ))
+          )}
         </tbody>
       </table>
     </div>

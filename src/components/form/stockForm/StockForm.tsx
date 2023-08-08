@@ -1,13 +1,15 @@
-import React, { type FC, useState } from 'react';
-import type { FormInstance } from 'antd';
-import { Button, Form, Input, Space, InputNumber, Select, Card } from 'antd';
+import React, { type FC, useState, useEffect } from 'react';
+import { Button, Form, Input, InputNumber, Select, Card, FormInstance } from 'antd';
+import { Load } from '~/components';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 import { Inventory } from '@prisma/client';
+import { Checkbox } from 'antd';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 
-type Props = {
+type PropsType = {
   title: string;
-  data?: Inventory | null;
+  data?: Inventory;
   onSubmit: (values: {
     barcode: string;
     name: string;
@@ -17,43 +19,50 @@ type Props = {
     type: 'FULL_UNIT' | 'PARTIAL_UNIT' | 'PACKS' | 'CONSUMABLE';
   }) => Promise<void>;
   isEditing: boolean;
+  isLoading: boolean;
+  onChange: ((e: CheckboxChangeEvent) => void) | undefined;
 };
 
-const SubmitButton = ({ form }: { form: FormInstance }) => {
-  const [submittable, setSubmittable] = React.useState(false);
+interface FormItemProps {
+  shouldUpdate: boolean;
+  className: string;
+  form: FormInstance<any>;
+}
 
-  // Watch all values
-  const values = Form.useWatch([], form);
-
-  React.useEffect(() => {
-    form.validateFields().then(
-      () => {
-        setSubmittable(true);
-      },
-      () => {
-        setSubmittable(false);
-      }
-    );
-  }, [values]);
-
+const FormItem: React.FC<FormItemProps> = ({ shouldUpdate, className, form }) => {
   return (
-    <Button type='primary' htmlType='submit' disabled={!submittable}>
-      Submit
-    </Button>
+    <Form.Item shouldUpdate={shouldUpdate} className={className}>
+      {() => (
+        <Button
+          type='primary'
+          htmlType='submit'
+          disabled={form.getFieldsError().filter(({ errors }) => errors.length).length > 0}
+        >
+          Submit
+        </Button>
+      )}
+    </Form.Item>
   );
 };
-export const StockForm: FC<Props> = ({ title, data, onSubmit, isEditing }) => {
+export const StockForm: FC<PropsType> = ({
+  title,
+  data,
+  onSubmit,
+  isEditing,
+  isLoading,
+  onChange,
+}) => {
   const [form] = Form.useForm();
-
   const onReset = () => {
     form.resetFields();
   };
   const stock = () => {
-    if (Number(data?.quantity) > 0) {
-      return <div> The number of stocks is {Number(data?.quantity)}</div>;
-    } else {
-      return <div> </div>;
-    }
+    if (!Number(data?.quantity)) return null;
+    return <div>{`The number of stocks is ${data?.quantity}`}</div>;
+  };
+  const check = () => {
+    if (!data) return <Checkbox onChange={onChange}>if you want create again</Checkbox>;
+    return null;
   };
 
   return (
@@ -65,75 +74,82 @@ export const StockForm: FC<Props> = ({ title, data, onSubmit, isEditing }) => {
         <span>{title}</span>
       </div>
       <hr className='opacity-5' />
-      <Form form={form} layout='vertical' name='validateOnly' onFinish={onSubmit}>
-        <div className='grid w-full grid-cols-1 gap-5 sm:grid-cols-2'>
-          <Form.Item
-            name='barcode'
-            label='Barcode'
-            rules={[{ required: true }, { min: 9 }]}
-            initialValue={data?.barcode}
-          >
-            <Input className='w-full' disabled={isEditing} max={10} />
-          </Form.Item>
-          <Form.Item
-            name='name'
-            label='Name'
-            rules={[{ required: true }]}
-            initialValue={data?.name}
-          >
-            <Input className='w-full' />
-          </Form.Item>
-          <Form.Item
-            name='cost'
-            label='Cost'
-            rules={[{ type: 'number', required: true }]}
-            initialValue={Number(data?.cost ?? 0)}
-          >
-            <InputNumber size='middle' min={0} className='w-full' />
-          </Form.Item>
-          <Form.Item
-            name='price'
-            label='Price'
-            rules={[{ type: 'number', required: true }]}
-            initialValue={Number(data?.price ?? 0)}
-          >
-            <InputNumber size='middle' min={0} className='w-full' />
-          </Form.Item>
-          <Form.Item
-            name='quantity'
-            label='Quantity'
-            rules={[{ type: 'number', required: true }]}
-            initialValue={0}
-          >
-            <InputNumber size='middle' min={0} className='w-full' />
-          </Form.Item>
-          <Form.Item
-            name='type'
-            label='Type'
-            rules={[{ required: true }]}
-            initialValue={data?.type ?? 'FULL_UNIT'}
-          >
-            <Select
-              className='w-full'
-              options={[
-                { value: 'FULL_UNIT', label: 'Full Unit' },
-                { value: 'PARTIAL_UNIT', label: 'Partial Unit' },
-                { value: 'PACKS', label: 'Packs' },
-                { value: 'CONSUMABLE', label: 'Consumable' },
-              ]}
-            />
-          </Form.Item>
-          <Form.Item initialValue={Number(data?.quantity ?? 0)}>{stock()}</Form.Item>
-          <Form.Item>
-            <Space>
-              <SubmitButton form={form} />
-              <Button htmlType='button' onClick={onReset}>
-                Reset
-              </Button>
-            </Space>
-          </Form.Item>
+      {isLoading ? (
+        <div className='m-auto grid w-full grid-cols-1 gap-5 p-48 sm:grid-cols-1'>
+          <Load />
         </div>
-      </Form>
+      ) : (
+        <Form form={form} layout='vertical' name='validateOnly' onFinish={onSubmit}>
+          <div className='grid w-full grid-cols-1 gap-5 sm:grid-cols-2'>
+            <Form.Item
+              name='barcode'
+              label='Barcode'
+              rules={[{ required: true }, { min: 9 }]}
+              initialValue={data?.barcode}
+            >
+              <Input className='w-full' disabled={isEditing} max={10} />
+            </Form.Item>
+            <Form.Item
+              name='name'
+              label='Name'
+              rules={[{ required: true }]}
+              initialValue={data?.name}
+            >
+              <Input className='w-full' />
+            </Form.Item>
+            <Form.Item
+              name='cost'
+              label='Cost'
+              rules={[{ type: 'number', required: true }]}
+              initialValue={Number(data?.cost ?? 0)}
+            >
+              <InputNumber size='middle' min={0} className='w-full' />
+            </Form.Item>
+            <Form.Item
+              name='price'
+              label='Price'
+              rules={[{ type: 'number', required: true }]}
+              initialValue={Number(data?.price ?? 0)}
+            >
+              <InputNumber size='middle' min={0} className='w-full' />
+            </Form.Item>
+            <Form.Item
+              name='quantity'
+              label='Quantity'
+              rules={[{ type: 'number', required: true }]}
+              initialValue={0}
+            >
+              <InputNumber size='middle' min={0} className='w-full' />
+            </Form.Item>
+            <Form.Item
+              name='type'
+              label='Type'
+              rules={[{ required: true }]}
+              initialValue={data?.type ?? 'FULL_UNIT'}
+            >
+              <Select
+                className='w-full'
+                options={[
+                  { value: 'FULL_UNIT', label: 'Full Unit' },
+                  { value: 'PARTIAL_UNIT', label: 'Partial Unit' },
+                  { value: 'PACKS', label: 'Packs' },
+                  { value: 'CONSUMABLE', label: 'Consumable' },
+                ]}
+              />
+            </Form.Item>
+            <Form.Item initialValue={Number(data?.quantity ?? 0)}>{stock()}</Form.Item>
+            <div className='flex justify-items-start'>
+              <FormItem shouldUpdate={true} className='submit' form={form} />
+              <div className='pl-2'>
+                <Button htmlType='button' onClick={onReset}>
+                  Reset
+                </Button>
+              </div>
+              <div className='pl-2'>{check()}</div>
+            </div>
+          </div>
+        </Form>
+      )}
     </Card>
   );
 };

@@ -2,7 +2,7 @@ import {
   getInventories,
   setInventories,
   getInventorie,
-  updateInventory,
+  updateInventoryByBarcode,
 } from '~/services/inventory';
 import { createTRPCRouter, publicProcedure } from '~/server/api/trpc';
 import { Prisma } from '@prisma/client';
@@ -30,7 +30,23 @@ export const inventoryRouter = createTRPCRouter({
   getByBarcode: publicProcedure
     .input(z.object({ barcode: z.string() }))
     .query(({ input }) => getInventorie(input.barcode)),
-  updateInventory: publicProcedure
-    .input(z.object(setValidatorSchemas))
-    .mutation(({ input }) => updateInventory(input)),
+  updateInventoryByBarcode: publicProcedure
+    .input(
+      z.object({
+        barcode: z.string(),
+        name: z.string().optional(),
+        quantity: z.number().optional(),
+        price: z.number().optional(),
+        cost: z.number().optional(),
+        type: z
+          .union([
+            z.literal('FULL_UNIT'),
+            z.literal('PARTIAL_UNIT'),
+            z.literal('PACKS'),
+            z.literal('CONSUMABLE'),
+          ])
+          .optional(),
+      })
+    )
+    .mutation(({ input }) => updateInventoryByBarcode(input)),
 });
