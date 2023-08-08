@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import { StockList } from '~/components';
 import { api } from '~/utils/api';
 const Stocks: NextPage = () => {
-  const { data } = api.inventory.get.useQuery();
+  const { data } = api.inventory.getall.useQuery();
 
   return (
     <div className='m-auto mt-10 w-full sm:w-3/4'>
