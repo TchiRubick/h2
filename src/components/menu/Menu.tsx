@@ -9,6 +9,7 @@ import {
   BankOutlined,
   AppstoreOutlined,
   LogoutOutlined,
+  DollarOutlined,
 } from '@ant-design/icons';
 import { Menu as MenuAntd, type MenuProps } from 'antd';
 import { useRouter } from 'next/router';
@@ -39,6 +40,11 @@ const items: MenuProps['items'] = [
   {
     label: 'Sales',
     key: '/sales',
+    icon: <DollarOutlined />,
+  },
+  {
+    label: 'Tickets',
+    key: '/tickets',
     icon: <CreditCardOutlined />,
   },
   {

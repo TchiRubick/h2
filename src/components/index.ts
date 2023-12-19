@@ -4,3 +4,8 @@ export * from '~/components/menu/Menu';
 export * from '~/components/form/stockForm/StockForm';
 export * from '~/components/list/stockList/StockList';
 export * from '~/components/load/Load';
+export * from '~/components/appContext/AppContext';
+export * from '~/components/cardsales/CardSales';
+export * from '~/components/cardbasket/CardBasket';
+export * from '~/components/buttonPlusMinusClose/ButtonPlusMinusClose';
+export * from '~/components/scrollCss/Scroll.module.css';

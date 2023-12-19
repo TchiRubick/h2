@@ -1,14 +1,12 @@
-import React, { type FC, useState } from 'react';
+import React, { useState } from 'react';
 import { api } from '~/utils/api';
 import type { NextPage } from 'next';
-import { StockForm } from '~/components';
+import { StockForm, useNotif } from '~/components';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useRouter } from 'next/router';
-import { Form } from 'antd';
 
 const Stocks: NextPage = () => {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [succesMessage, setsuccesMessage] = useState('');
+  const { opennotification } = useNotif();
   const router = useRouter();
   const [targetcheck, settargetcheck] = useState(false);
   const onChange = (e: CheckboxChangeEvent) => {
@@ -19,35 +17,38 @@ const Stocks: NextPage = () => {
   const { mutateAsync, isLoading } = api.inventory.set.useMutation();
 
   const onSubmit = async (values: {
+    user: string;
     barcode: string;
     name: string;
     cost: number;
     price: number;
     quantity: number;
     type: 'FULL_UNIT' | 'PARTIAL_UNIT' | 'PACKS' | 'CONSUMABLE';
+    packunit: number;
+    unitperpack: number;
   }) => {
     try {
       await mutateAsync(values);
-      setsuccesMessage('Succes');
-      setErrorMessage('');
-      if (targetcheck === true) return setsuccesMessage('Succes');
-      router.push('/stocks');
+      if (targetcheck === true)
+        return opennotification('success', 'Creation success', 'the creation is succes');
+      opennotification('success', 'Creation success', 'the creation is succes');
+      setTimeout(() => {
+        router.push('/stocks');
+      }, 3000);
     } catch (error) {
-      setErrorMessage('Error, barcode is unique');
-      setsuccesMessage('');
+      opennotification('error', 'Update  failed', 'the upload is failed');
     }
   };
 
   return (
     <div className='m-auto w-full sm:w-3/4'>
-      <h1 className='text-red-500'>{errorMessage}</h1>
-      <h1 className='text-blue-800'>{succesMessage}</h1>
       <StockForm
         title='Create an inventory'
         onSubmit={onSubmit}
         isEditing={false}
         isLoading={isLoading}
         onChange={onChange}
+        checkboxVerification={targetcheck}
       />
     </div>
   );

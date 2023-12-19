@@ -3,15 +3,18 @@
 
 generator client {
     provider = "prisma-client-js"
+    
 }
 
 datasource db {
     provider = "mysql"
     url      = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 model Inventory {
   id Int @default(autoincrement()) @id
+  user String
   barcode String @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -20,6 +23,64 @@ model Inventory {
   price Decimal @db.Decimal(13,2)
   quantity Decimal @db.Decimal(13,2)
   type TypesProduct @default(FULL_UNIT)
+  packunit Decimal @db.Decimal(13,2)
+  unitperpack Decimal @db.Decimal(13,2)
+  sales Sales[]
+  transaction Transaction[]
+}
+
+model Sales {
+  id Int @default(autoincrement()) @id
+  user String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId Int 
+  ticket    Ticket @relation(fields: [ticketId], references: [id])
+  ticketId   Int 
+  quantitybuyclient Decimal @db.Decimal(13,2)
+  pricetotalitem Decimal @db.Decimal(13,2)
+
+  @@index([inventoryId])
+  @@index([ticketId])
+}
+
+model Ticket {
+  id Int @default(autoincrement()) @id
+  user String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  sales Sales[]
+  totalpurchaseprice Decimal @db.Decimal(13,2)
+  moneypaidclient Decimal @db.Decimal(13,2)
+  change  Decimal @db.Decimal(13,2)
+}
+
+model Transaction {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user String
+  action String
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId Int 
+  namebefore String
+  nameafter String
+  costbefore Decimal @db.Decimal(13,2)
+  costafter Decimal @db.Decimal(13,2)
+  pricebefore Decimal @db.Decimal(13,2)
+  priceafter Decimal @db.Decimal(13,2)
+  quantitybefore Decimal @db.Decimal(13,2)
+  quantityafter Decimal @db.Decimal(13,2)
+  typebefore TypesProduct @default(FULL_UNIT)
+  typeafter TypesProduct @default(FULL_UNIT)
+  packunitbefore Decimal @db.Decimal(13,2)
+  packunitafter Decimal @db.Decimal(13,2)
+  unitperpackbefore Decimal @db.Decimal(13,2)
+  unitperpackafter Decimal @db.Decimal(13,2)
+
+  
+  @@index([inventoryId])
 }
 
 enum TypesProduct {

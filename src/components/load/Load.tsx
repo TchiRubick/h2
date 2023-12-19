@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Spin, Alert } from 'antd';
+import { Spin } from 'antd';
 
 export const Load: FC = () => {
   return (

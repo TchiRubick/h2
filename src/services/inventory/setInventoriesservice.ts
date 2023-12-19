@@ -4,5 +4,5 @@ const prisma = new PrismaClient();
 
 type OmitedProperty = 'id' | 'createdAt' | 'updatedAt';
 
-export const setInventories = async (data: Omit<Inventory, OmitedProperty>) =>
+export const setInventoriesservice = async (data: Omit<Inventory, OmitedProperty>) =>
   prisma.inventory.create({ data });
